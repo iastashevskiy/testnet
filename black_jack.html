@@ -1,0 +1,117 @@
+<meta charset="utf-8">
+<script>
+
+function getRandomInt(min,max){
+	return Math.floor(Math.random()*(max - min +1)) + min;
+}
+
+function getCard() {
+	var cards = ['6','7','8','9','10','J','Q','K','A'];
+	return cards[getRandomInt(0, cards.length -1)];
+}
+
+var dealer = [getCard()];
+var player = [getCard(), getCard()];
+
+function getSum(player){
+	var sum = 0;
+	for(i=0;i<player.length;i++){
+		var card = player[i];
+		if (card=='J'){
+			card = 2;	
+			sum = sum + parseInt(card);
+		}
+		else if (card=='Q'){
+			card = 3;
+			sum = sum + parseInt(card);
+		}
+		else if (card=='K'){
+			card = 4;
+			sum = sum + parseInt(card);
+		}
+		else if (card=='A'){
+			card = 11;
+			sum = sum + parseInt(card);
+		}
+		else{
+			sum = sum + parseInt(card);
+		}
+	}
+	return sum;
+}
+
+function getStatus(){
+	return'Дилер: ' + dealer.join(' ') + 'Игрок: ' + player.join(' ') + '.';
+}
+
+var answer = '';
+var end = 0;
+do{
+	alert (getStatus());
+	alert('У дилера: ' + getSum(dealer) + ' У тебя: ' + getSum(player));
+	if (getSum(player) == 21){
+		alert('Очко! Красавчик!');
+		var end = 1;
+		break;
+		}
+
+	else if (getSum(player) > 21){
+		alert('Перебор!!!');
+		var end = 1;
+		break;
+		}
+	else if (getSum(dealer) == 21){
+		alert('Дилер победил, у него 21');
+		var end = 1;
+		break;
+	}
+	else if (getSum(dealer) > 21){
+		alert ('Ты победил! ');
+		var end = 1;
+		break;
+	}
+	else {
+		answer = prompt(getStatus() + 'Еще карту? да/нет');
+		if ((getSum(dealer) < 18) && answer == 'да'){
+			dealer.push(getCard());
+			player.push(getCard());
+			}
+		else if ((getSum(dealer) >= 18) && answer == 'да'){
+			player.push(getCard());
+		}
+		else if ((getSum(dealer) < 18) && answer !='да'){
+			do{
+				dealer.push(getCard());
+			}
+			while (getSum(dealer) <= 18);
+		}	
+	}
+
+
+}
+while (answer =='да');	
+
+if (end==1){	
+	}
+
+else{
+alert (getStatus());
+			alert('У дилера: ' + getSum(dealer) + ' У тебя: ' + getSum(player));
+			if (getSum(player) > getSum(dealer)){
+				alert ("Победа! У тебя больше!");
+				}
+			else if (getSum(player) == getSum(dealer)){
+				alert ("Ничья!");
+				}
+			else if (getSum(dealer) > 21){
+				alert ('Победа! У дилера перебор.');
+			}
+			else if (getSum(dealer) == 21){
+				alert ('У дилера очко! Ты продул.');
+			}
+			else {
+				alert ("Дилер победил!");
+			}
+}
+
+</script>
